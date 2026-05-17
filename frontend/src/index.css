@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  font-family: "Segoe UI Variable", "Bahnschrift", "Trebuchet MS", sans-serif;
+  background: #07111d;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@layer components {
+  .panel {
+    @apply rounded-3xl border border-panelEdge/90 bg-panel/85 shadow-panel backdrop-blur;
+  }
+
+  .panel-title {
+    @apply text-lg font-semibold tracking-wide text-slate-100;
+  }
+
+  .muted-label {
+    @apply text-xs uppercase tracking-[0.22em] text-slate-400;
+  }
+}

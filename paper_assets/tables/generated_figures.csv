@@ -1,0 +1,17 @@
+kind,filename,path
+figure,bottleneck_confusion_matrix.png,D:\OCC-Demo\paper_assets\figures\bottleneck_confusion_matrix.png
+figure,bottleneck_feature_importance.png,D:\OCC-Demo\paper_assets\figures\bottleneck_feature_importance.png
+figure,bottleneck_model_comparison.png,D:\OCC-Demo\paper_assets\figures\bottleneck_model_comparison.png
+figure,inventory_risk_confusion_matrix.png,D:\OCC-Demo\paper_assets\figures\inventory_risk_confusion_matrix.png
+figure,inventory_risk_feature_importance.png,D:\OCC-Demo\paper_assets\figures\inventory_risk_feature_importance.png
+figure,inventory_risk_model_comparison.png,D:\OCC-Demo\paper_assets\figures\inventory_risk_model_comparison.png
+figure,maintenance_failure_confusion_matrix.png,D:\OCC-Demo\paper_assets\figures\maintenance_failure_confusion_matrix.png
+figure,maintenance_failure_feature_importance.png,D:\OCC-Demo\paper_assets\figures\maintenance_failure_feature_importance.png
+figure,maintenance_failure_model_comparison.png,D:\OCC-Demo\paper_assets\figures\maintenance_failure_model_comparison.png
+figure,maintenance_rul_feature_importance.png,D:\OCC-Demo\paper_assets\figures\maintenance_rul_feature_importance.png
+figure,maintenance_rul_model_comparison.png,D:\OCC-Demo\paper_assets\figures\maintenance_rul_model_comparison.png
+figure,maintenance_rul_scatter.png,D:\OCC-Demo\paper_assets\figures\maintenance_rul_scatter.png
+figure,maintenance_urgency_confusion_matrix.png,D:\OCC-Demo\paper_assets\figures\maintenance_urgency_confusion_matrix.png
+figure,maintenance_urgency_feature_importance.png,D:\OCC-Demo\paper_assets\figures\maintenance_urgency_feature_importance.png
+figure,maintenance_urgency_model_comparison.png,D:\OCC-Demo\paper_assets\figures\maintenance_urgency_model_comparison.png
+figure,system_architecture_publication.png,D:\OCC-Demo\paper_assets\figures\system_architecture_publication.png

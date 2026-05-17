@@ -1,0 +1,4 @@
+candidate,best_params,development_cv_rmse
+gradient_boosting_regressor,"{'model__learning_rate': 0.1, 'model__max_depth': 3, 'model__n_estimators': 140}",4.0612
+random_forest_regressor,"{'model__max_depth': None, 'model__min_samples_leaf': 2}",4.3312
+ridge_regression,{'model__alpha': 3.0},4.6418

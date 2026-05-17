@@ -1,0 +1,4 @@
+candidate,best_params,development_cv_f1_macro
+logistic_regression,"{""model__C"": 0.35}",0.7219214844881472
+gradient_boosting,"{""model__learning_rate"": 0.1, ""model__max_depth"": 2, ""model__n_estimators"": 140}",0.7157347915757767
+random_forest,"{""model__max_depth"": 10, ""model__min_samples_leaf"": 1}",0.7110486833234058

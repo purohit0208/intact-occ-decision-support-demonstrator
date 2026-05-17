@@ -1,0 +1,13 @@
+page,panel,classification,note
+Dashboard,Inbound flight summary cards,Rule-based logic,Cards aggregate rule-based fusion outputs computed over the current synthetic inbound scenario set.
+Dashboard,Inbound flight list / fused summary row,Rule-based logic,Each row summarizes scenario state plus module outputs using deterministic OCC fusion and summary assembly logic.
+Flight detail,Aircraft-side / cabin report,Scenario simulation,"Pre-arrival cabin, assistance, and trolley signals are synthetic but operationally grounded scenario inputs."
+Flight detail,Predictive maintenance intelligence,Trained ML inference,"Failure probability, urgency class, and remaining-flights proxy are produced by locally trained models on synthetic reliability-oriented data."
+Flight detail,Inventory intelligence,Trained ML inference,Inventory risk combines a locally trained classifier with a transparent monotonic what-if guard; affected area and recommendation are transparent post-model operational logic.
+Flight detail,Passenger assistance readiness,Rule-based logic,Assistance readiness is intentionally implemented as dispatch-support logic rather than unsupported localization ML.
+Flight detail,Turnaround bottleneck prediction,Trained ML inference,Dominant bottleneck and probability distribution are produced by a local multiclass model trained on process-aware synthetic turnaround data.
+Flight detail,Readiness score and action queue,Rule-based logic,Fusion outputs are deterministic OCC coordination logic built on module outputs and scenario state.
+Scenario lab,Scenario recomputation output,Scenario simulation,Operator input changes deterministically recompute the synthetic scenario state before module inference and fusion are re-run locally.
+Impact,Proactive versus reactive comparison widget,Scenario simulation,"Delay-risk and benefit indicators are demonstrator-level simulated impact values, not validated airline deployment outcomes."
+Architecture,Truthfulness and limitations disclosure,Rule-based logic,"This page is explanatory metadata documenting provenance, reproducibility, and limitations rather than a predictive module."
+Offline fallback mode,Frontend fallback responses when backend is unavailable,Placeholder or fake intelligence,These responses are deliberate resilience placeholders only and should not be used as evidence of model behavior.

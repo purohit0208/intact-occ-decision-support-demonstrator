@@ -1,0 +1,12 @@
+.venv/
+.pytest_cache/
+__pycache__/
+*.pyc
+backend/.pytest_cache/
+backend/**/__pycache__/
+frontend/node_modules/
+frontend/dist/
+paper_assets/mplconfig/
+verify_*.log
+backend_server.*.log
+frontend_server.*.log
