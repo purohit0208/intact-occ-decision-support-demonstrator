@@ -1,0 +1,6 @@
+Module,Task,Selected model,Validation metric,Output granularity,Evidence boundary
+Predictive maintenance,Maintenance failure risk,Logistic Regression,ROC-AUC 0.740,Component-aware features; flight-scenario risk output,Synthetic-data support only; not certified maintenance planning
+Predictive maintenance,Maintenance urgency class,Logistic Regression,macro-F1 0.857; ROC-AUC OVR 0.976,Component-aware features; flight-scenario urgency label,Synthetic-data support only; not certified maintenance planning
+Predictive maintenance,Remaining-flights proxy,Gradient Boosting Regressor,RMSE 4.020; R2 0.925,Flight-scenario remaining-flights proxy,Synthetic-data support only; not certified maintenance planning
+Inventory intelligence,Inventory risk level,Logistic Regression,macro-F1 0.748; ROC-AUC OVR 0.903,"Service-area, trolley-level, and flight-level inventory-risk support",Synthetic service-readiness risk; not item-wise demand or airline validation
+Bottleneck prediction,Bottleneck class,Logistic Regression,macro-F1 0.696; ROC-AUC OVR 0.941,Process-class bottleneck probabilities,Synthetic process-class probabilities; not field duration validation

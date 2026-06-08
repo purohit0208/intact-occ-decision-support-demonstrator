@@ -1,0 +1,9 @@
+test,criterion,passed,min_readiness,max_readiness,notes
+malfunction_severity,failure risk and urgency non-decreasing; readiness non-increasing,False,59.2,77.0,Controlled one-factor sweep; not field validation.
+malfunction_count,readiness non-increasing,False,59.9,77.0,Controlled one-factor sweep; not field validation.
+inventory_shortage_score,inventory risk non-decreasing,True,66.6,76.6,Controlled one-factor sweep; not field validation.
+trolley_availability,inventory risk non-decreasing as availability decreases,True,71.0,77.6,Controlled one-factor sweep; not field validation.
+arrival_delay,readiness non-increasing,True,52.2,79.2,Controlled one-factor sweep; not field validation.
+gate_congestion,readiness non-increasing,True,59.4,79.4,Controlled one-factor sweep; not field validation.
+assistance_request,unconfirmed assistance request does not improve readiness relative to no request or confirmed support,True,61.4,76.6,Rule-based assistance-readiness check.
+composite_vs_low_risk,composite multi-risk case has lower readiness than isolated low-risk case,True,8.0,85.3,Scenario-class comparison; not empirical validation.

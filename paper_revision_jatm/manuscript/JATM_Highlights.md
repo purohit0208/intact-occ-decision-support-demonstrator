@@ -1,0 +1,5 @@
+- Pre-arrival operations control support is tested for aircraft turnaround.
+- Maintenance, inventory, bottleneck, and assistance signals are fused.
+- One thousand synthetic cases cover six operational regimes.
+- Signal-removal tests show how inputs change readiness and actions.
+- Limitations state no airline data, deployment, user study, or savings claim.

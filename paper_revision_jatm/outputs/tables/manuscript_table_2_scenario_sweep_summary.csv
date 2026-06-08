@@ -1,0 +1,12 @@
+Metric,Value
+scenario count,1000.0
+mean readiness,47.396
+median readiness,50.65
+mean action queue size,4.604
+alert routine count,188.0
+alert watch count,158.0
+alert priority count,284.0
+alert critical count,370.0
+dominant bottleneck maintenance count,319.0
+dominant bottleneck catering count,186.0
+dominant bottleneck boarding count,286.0
