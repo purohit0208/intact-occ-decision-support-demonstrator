@@ -1,6 +1,6 @@
 Configuration,Mean readiness,Delta from full,Critical,Priority,Mean actions,Top action changes
-full system,47.396,0.0,370,284,4.604,0
-no assistance in fusion,48.828,1.432,362,284,4.415,108
-no bottleneck in fusion,57.388,9.991,208,238,4.657,122
-no inventory in fusion,54.13,6.734,330,91,4.071,187
-no maintenance in fusion,61.049,13.652,79,307,3.938,319
+Full system,47.40,0.00,370,284,4.60,0
+No assistance in fusion,48.83,1.43,362,284,4.42,108
+No bottleneck in fusion,57.39,9.99,208,238,4.66,122
+No inventory in fusion,54.13,6.73,330,91,4.07,187
+No maintenance in fusion,61.05,13.65,79,307,3.94,319

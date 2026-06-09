@@ -1,9 +1,9 @@
 Test,Passed,Criterion
-malfunction severity,False,failure risk and urgency non-decreasing; readiness non-increasing
-malfunction count,False,readiness non-increasing
-inventory shortage score,True,inventory risk non-decreasing
-trolley availability,True,inventory risk non-decreasing as availability decreases
-arrival delay,True,readiness non-increasing
-gate congestion,True,readiness non-increasing
-assistance request,True,unconfirmed assistance request does not improve readiness relative to no request or confirmed support
-composite vs low risk,True,composite multi-risk case has lower readiness than isolated low-risk case
+Malfunction severity,No,failure risk and urgency non-decreasing; readiness non-increasing
+Malfunction count,No,readiness non-increasing
+Inventory shortage score,Yes,inventory risk non-decreasing
+Trolley availability,Yes,inventory risk non-decreasing as availability decreases
+Arrival delay,Yes,readiness non-increasing
+Gate congestion,Yes,readiness non-increasing
+Assistance request,Yes,unconfirmed assistance request does not improve readiness relative to no request or confirmed support
+Composite vs low risk,Yes,composite multi-risk case has lower readiness than isolated low-risk case

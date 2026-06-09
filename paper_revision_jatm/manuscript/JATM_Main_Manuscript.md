@@ -133,7 +133,7 @@ This paper presents a pre-arrival OCC decision-support architecture for aircraft
 
 ## Data, Code, and Artifact Availability
 
-The demonstrator source code, scenario-evaluation scripts, generated tables, and generated figures used in this study are available at https://github.com/purohit0208/intact-occ-decision-support-demonstrator. No airline operational dataset is included.
+The demonstrator source code, scenario-evaluation scripts, generated tables, and generated figures used in this study are available in a repository prepared for review. The identifying repository link has been withheld from the anonymized manuscript and will be provided after peer review or through an anonymized review link if required by the journal workflow. No airline operational dataset is included.
 
 ## Declaration of Generative AI and AI-Assisted Technologies
 

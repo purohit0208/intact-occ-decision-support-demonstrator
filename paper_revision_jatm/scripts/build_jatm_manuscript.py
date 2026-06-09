@@ -136,6 +136,98 @@ def rename_columns(df: pd.DataFrame, labels: dict[str, str]) -> pd.DataFrame:
     return df.rename(columns={col: labels.get(col, col.replace("_", " ")) for col in df.columns})
 
 
+def fmt_decimal(value: object, digits: int = 2) -> str:
+    if str(value) == "N/A":
+        return "N/A"
+    try:
+        numeric = float(value)
+    except Exception:
+        return str(value)
+    return f"{numeric:.{digits}f}"
+
+
+def fmt_int(value: object) -> str:
+    if str(value) == "N/A":
+        return "N/A"
+    try:
+        return str(int(round(float(value))))
+    except Exception:
+        return str(value)
+
+
+def display_configuration(value: str) -> str:
+    labels = {
+        "full system": "Full system",
+        "no assistance in fusion": "No assistance in fusion",
+        "no bottleneck in fusion": "No bottleneck in fusion",
+        "no inventory in fusion": "No inventory in fusion",
+        "no maintenance in fusion": "No maintenance in fusion",
+    }
+    return labels.get(value, value.capitalize())
+
+
+def display_baseline(value: str) -> str:
+    labels = {
+        "full integrated fusion": "Full integrated fusion",
+        "full integrated occ fusion": "Full integrated OCC fusion",
+        "static delay gate": "Static delay/gate baseline",
+        "static delay gate baseline": "Static delay/gate baseline",
+        "maintenance only": "Maintenance-only baseline",
+        "maintenance only baseline": "Maintenance-only baseline",
+        "inventory only": "Inventory-only baseline",
+        "inventory only baseline": "Inventory-only baseline",
+        "bottleneck only": "Bottleneck-only baseline",
+        "bottleneck only baseline": "Bottleneck-only baseline",
+    }
+    return labels.get(value, value.capitalize())
+
+
+def display_metric_name(value: str) -> str:
+    labels = {
+        "scenario count": "Scenario count",
+        "mean readiness": "Mean readiness",
+        "median readiness": "Median readiness",
+        "mean action queue size": "Mean action queue size",
+        "alert routine count": "Routine alerts",
+        "alert watch count": "Watch alerts",
+        "alert priority count": "Priority alerts",
+        "alert critical count": "Critical alerts",
+        "dominant bottleneck maintenance count": "Maintenance bottleneck count",
+        "dominant bottleneck catering count": "Catering bottleneck count",
+        "dominant bottleneck boarding count": "Boarding bottleneck count",
+    }
+    return labels.get(value, value.capitalize())
+
+
+def format_summary_value(metric_name: str, value: object) -> str:
+    if metric_name.endswith("_count") or metric_name == "scenario_count":
+        return fmt_int(value)
+    if "readiness" in metric_name or metric_name == "mean_action_queue_size":
+        return fmt_decimal(value, 2)
+    return fmt_decimal(value, 3)
+
+
+def fmt_bool(value: object) -> str:
+    if isinstance(value, bool):
+        return "Yes" if value else "No"
+    return "Yes" if str(value).strip().lower() in {"true", "1", "yes"} else "No"
+
+
+def scrub_document_metadata(document: Document) -> None:
+    props = document.core_properties
+    props.author = ""
+    props.category = ""
+    props.comments = ""
+    props.content_status = ""
+    props.identifier = ""
+    props.keywords = ""
+    props.language = ""
+    props.last_modified_by = ""
+    props.subject = ""
+    props.title = ""
+    props.version = ""
+
+
 def marker_path(path: Path) -> str:
     try:
         return path.relative_to(REVISION_ROOT).as_posix()
@@ -253,7 +345,12 @@ def create_compact_tables() -> dict[str, Path]:
             "mean_action_queue_size",
         ]
         compact = sweep_summary[sweep_summary["metric"].isin(wanted)].copy()
+        compact["value"] = [
+            format_summary_value(metric_name, value)
+            for metric_name, value in zip(compact["metric"], compact["value"])
+        ]
         compact["metric"] = compact["metric"].str.replace("_", " ", regex=False)
+        compact["metric"] = compact["metric"].map(display_metric_name)
         compact = clean_compact_df(rename_columns(compact, {"metric": "Metric", "value": "Value"}))
         target = OUTPUT_TABLES / "manuscript_table_2_scenario_sweep_summary.csv"
         compact.to_csv(target, index=False, na_rep="N/A")
@@ -273,6 +370,14 @@ def create_compact_tables() -> dict[str, Path]:
         ]
         compact = regime[[col for col in columns if col in regime.columns]].copy()
         compact["regime"] = compact["regime"].map(display_regime)
+        if "scenario_count" in compact:
+            compact["scenario_count"] = compact["scenario_count"].map(fmt_int)
+        for col in ["mean_readiness", "median_readiness", "assistance_confirmed_minus_unconfirmed"]:
+            if col in compact:
+                compact[col] = compact[col].map(lambda value: fmt_decimal(value, 2))
+        for col in ["mean_maintenance_failure_probability", "mean_inventory_shortage_risk"]:
+            if col in compact:
+                compact[col] = compact[col].map(lambda value: fmt_decimal(value, 3))
         compact = clean_compact_df(
             rename_columns(
                 compact,
@@ -296,6 +401,8 @@ def create_compact_tables() -> dict[str, Path]:
     if not monotonic.empty:
         compact = monotonic[["test", "passed", "criterion"]].copy()
         compact["test"] = compact["test"].str.replace("_", " ", regex=False)
+        compact["test"] = compact["test"].str.capitalize()
+        compact["passed"] = compact["passed"].map(fmt_bool)
         compact = clean_compact_df(rename_columns(compact, {"test": "Test", "passed": "Passed", "criterion": "Criterion"}))
         target = OUTPUT_TABLES / "manuscript_table_4_monotonicity_summary.csv"
         compact.to_csv(target, index=False, na_rep="N/A")
@@ -314,6 +421,11 @@ def create_compact_tables() -> dict[str, Path]:
         ]
         compact = ablation[columns].copy()
         compact["configuration"] = compact["configuration"].str.replace("_", " ", regex=False)
+        compact["configuration"] = compact["configuration"].map(display_configuration)
+        for col in ["mean_readiness", "mean_readiness_delta_from_full", "mean_action_queue_size"]:
+            compact[col] = compact[col].map(lambda value: fmt_decimal(value, 2))
+        for col in ["critical_cases", "priority_cases", "top_action_changed_cases"]:
+            compact[col] = compact[col].map(fmt_int)
         compact = clean_compact_df(
             rename_columns(
                 compact,
@@ -346,6 +458,11 @@ def create_compact_tables() -> dict[str, Path]:
         ]
         compact = baseline[columns].copy()
         compact["baseline"] = compact["baseline"].str.replace("_", " ", regex=False)
+        compact["baseline"] = compact["baseline"].map(display_baseline)
+        for col in ["mean_readiness", "std_readiness"]:
+            compact[col] = compact[col].map(lambda value: fmt_decimal(value, 2))
+        for col in ["unique_alert_levels", "unique_dominant_signals", "unique_action_categories", "critical_cases", "priority_cases"]:
+            compact[col] = compact[col].map(fmt_int)
         compact = clean_compact_df(
             rename_columns(
                 compact,
@@ -571,7 +688,7 @@ This paper presents a pre-arrival OCC decision-support architecture for aircraft
 
 ## Data, Code, and Artifact Availability
 
-The demonstrator source code, scenario-evaluation scripts, generated tables, and generated figures used in this study are available at https://github.com/purohit0208/intact-occ-decision-support-demonstrator. No airline operational dataset is included.
+The demonstrator source code, scenario-evaluation scripts, generated tables, and generated figures used in this study are available in a repository prepared for review. The identifying repository link has been withheld from the anonymized manuscript and will be provided after peer review or through an anonymized review link if required by the journal workflow. No airline operational dataset is included.
 
 ## Declaration of Generative AI and AI-Assisted Technologies
 
@@ -639,6 +756,7 @@ def flush_paragraph(document: Document, buffer: list[str], alignment=WD_ALIGN_PA
 def build_main_docx(markdown_path: Path) -> Path:
     document = Document()
     set_document_defaults(document)
+    scrub_document_metadata(document)
     add_page_numbers(document)
     buffer: list[str] = []
     alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
@@ -690,6 +808,7 @@ def build_main_docx(markdown_path: Path) -> Path:
 def build_title_page() -> Path:
     document = Document()
     set_document_defaults(document)
+    scrub_document_metadata(document)
     for section in document.sections:
         section.top_margin = Inches(0.55)
         section.bottom_margin = Inches(0.55)
@@ -716,6 +835,10 @@ def build_title_page() -> Path:
                 "Address: Technische Universität Braunschweig, Institut für Flugführung | Institute of Flight Guidance, Hermann-Blenk-Str. 27, 38108 Braunschweig, Germany",
                 "Website: https://www.tu-braunschweig.de/iff",
             ],
+        ),
+        (
+            "Data/code repository",
+            ["https://github.com/purohit0208/intact-occ-decision-support-demonstrator"],
         ),
         ("Funding", [FUNDING_TEXT]),
         ("Acknowledgments", [ACKNOWLEDGMENTS_TEXT]),
@@ -760,6 +883,7 @@ def build_highlights() -> Path:
     (MANUSCRIPT_DIR / "JATM_Highlights.md").write_text("\n".join(f"- {item}" for item in highlights) + "\n", encoding="utf-8")
     document = Document()
     set_document_defaults(document)
+    scrub_document_metadata(document)
     p = document.add_paragraph()
     set_run_font(p.add_run("Highlights"), size=12, bold=True)
     for item in highlights:
