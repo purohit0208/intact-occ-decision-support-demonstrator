@@ -1,0 +1,6 @@
+baseline,scenario_count,mean_readiness,std_readiness,unique_alert_levels,unique_dominant_signals,unique_action_categories,critical_cases,priority_cases,alert_routine_count,alert_watch_count,alert_priority_count,alert_critical_count
+static_delay_gate,1000,73.439,13.648,3,1,1,0,168,578,254,168,0
+maintenance_only,1000,73.556,23.758,4,4,2,13,306,667,14,306,13
+inventory_only,1000,69.153,15.805,3,3,2,0,401,473,126,401,0
+bottleneck_only,1000,50.183,13.13,4,5,5,201,465,50,284,465,201
+full_integrated_occ_fusion,1000,47.396,25.038,4,5,7,370,284,188,158,284,370

@@ -484,7 +484,7 @@ def create_compact_tables() -> dict[str, Path]:
     return tables
 
 
-def metric(metric_name: str) -> str:
+def metric(metric_name: str, digits: int = 3) -> str:
     summary = read_csv_safe(OUTPUT_TABLES / "scenario_sweep_summary.csv")
     if summary.empty:
         return "NA"
@@ -495,13 +495,13 @@ def metric(metric_name: str) -> str:
             numeric = float(value)
             if numeric.is_integer():
                 return str(int(numeric))
-            return f"{numeric:.3f}".rstrip("0").rstrip(".")
+            return f"{numeric:.{digits}f}".rstrip("0").rstrip(".")
         except Exception:
             return str(value)
     return "NA"
 
 
-def first_value(path: Path, key_col: str, key: str, value_col: str) -> str:
+def first_value(path: Path, key_col: str, key: str, value_col: str, digits: int = 2, trim: bool = True) -> str:
     df = read_csv_safe(path)
     if df.empty:
         return "NA"
@@ -510,7 +510,8 @@ def first_value(path: Path, key_col: str, key: str, value_col: str) -> str:
         value = hit[value_col].iat[0]
         try:
             numeric = float(value)
-            return f"{numeric:.2f}".rstrip("0").rstrip(".")
+            formatted = f"{numeric:.{digits}f}"
+            return formatted.rstrip("0").rstrip(".") if trim else formatted
         except Exception:
             return str(value)
     return "NA"
@@ -541,8 +542,8 @@ def reference_block() -> str:
 
 def build_markdown(tables: dict[str, Path]) -> Path:
     scenario_count = metric("scenario_count")
-    mean_readiness = metric("mean_readiness")
-    median_readiness = metric("median_readiness")
+    mean_readiness = metric("mean_readiness", digits=1)
+    median_readiness = metric("median_readiness", digits=1)
     critical_count = metric("alert_critical_count")
     priority_count = metric("alert_priority_count")
     routine_count = metric("alert_routine_count")
@@ -550,8 +551,8 @@ def build_markdown(tables: dict[str, Path]) -> Path:
     low_mean = first_value(OUTPUT_TABLES / "regime_summary_table.csv", "regime", "low_risk_routine", "mean_readiness")
     maintenance_mean = first_value(OUTPUT_TABLES / "regime_summary_table.csv", "regime", "maintenance_heavy", "mean_readiness")
     inventory_mean = first_value(OUTPUT_TABLES / "regime_summary_table.csv", "regime", "inventory_heavy", "mean_readiness")
-    ablation_no_maintenance = first_value(OUTPUT_TABLES / "ablation_summary.csv", "configuration", "no_maintenance_in_fusion", "mean_readiness_delta_from_full")
-    ablation_no_bottleneck = first_value(OUTPUT_TABLES / "ablation_summary.csv", "configuration", "no_bottleneck_in_fusion", "mean_readiness_delta_from_full")
+    ablation_no_maintenance = first_value(OUTPUT_TABLES / "ablation_summary.csv", "configuration", "no_maintenance_in_fusion", "mean_readiness_delta_from_full", digits=1, trim=False)
+    ablation_no_bottleneck = first_value(OUTPUT_TABLES / "ablation_summary.csv", "configuration", "no_bottleneck_in_fusion", "mean_readiness_delta_from_full", digits=1, trim=False)
 
     body = f"""# {TITLE_SELECTED}
 
@@ -573,23 +574,23 @@ The work uses synthetic but operationally grounded data because no real airline,
 
 ### 2.1 OCC Decision Support and Disruption Management
 
-Airline Operations Control Centers coordinate time-critical decisions across aircraft, crews, gates, passengers, and downstream rotations. Classical OCC and disruption-management literature, including work by Clarke, Clausen, Hassan, and Su, shows that these decisions combine schedule recovery, resource coordination, and human judgment rather than a single optimization objective. Naturalistic and decision-support studies by Fogaca and Vink further motivate systems that preserve operator review instead of replacing OCC staff with automated control.
+Airline Operations Control Centers coordinate time-critical decisions across aircraft, crews, gates, passengers, and downstream rotations. Classical OCC and disruption-management literature shows that these decisions combine schedule recovery, resource coordination, and human judgment rather than a single optimization objective (Clarke, 1998; Clausen et al., 2010; Hassan et al., 2021; Su et al., 2021). Naturalistic and decision-support studies further motivate systems that preserve operator review instead of replacing OCC staff with automated control (Vink et al., 2020; Fogaca et al., 2022).
 
 ### 2.2 Turnaround Coordination and Ground Handling
 
-Aircraft turnaround research treats the stand-side process as a tightly coupled operational system. Work on turnaround management, ground-handling automation, apron-resource planning, and delay propagation, including studies by Makhloof, Conde, Gok, Guimarans, Evler, and Wu, shows that local process delays can affect broader airline and airport performance. This paper builds on that perspective by focusing on pre-arrival coordination signals that can change preparation before the aircraft reaches the stand.
+Aircraft turnaround research treats the stand-side process as a tightly coupled operational system. Work on turnaround management, digital-twin support, apron-resource planning, ground-resource planning, schedule recovery, and ground-handling prediction shows that local process delays can affect broader airline and airport performance (Makhloof et al., 2014; Evler et al., 2021a, 2021b, 2022; Conde et al., 2022; Guimarans and Padron, 2022; Gok et al., 2023; Wu et al., 2023). This paper builds on that perspective by focusing on pre-arrival coordination signals that can change preparation before the aircraft reaches the stand.
 
 ### 2.3 Aviation ML for Delay and Resource Prediction
 
-Aviation machine-learning studies have addressed arrival-time prediction, delay classification, resource planning, and ground-operation forecasting. The cited studies by Basturk, Zoutendijk, Sahadevan, Okwir, Kicinger, and Wandelt support the view that predictive analytics can inform aviation operations. However, a collection of separate predictive tasks does not automatically create an OCC workflow. The contribution here is therefore not a new prediction algorithm; it is the operational integration of heterogeneous predictive and rule-based signals into one pre-arrival advisory process.
+Aviation machine-learning studies have addressed arrival-time prediction, delay classification, resource planning, smart-aviation applications, and ground-operation forecasting (Basturk and Cetek, 2021; Zoutendijk and Mitici, 2021; Sahadevan et al., 2023; Jiang et al., 2023; Okwir et al., 2025; Kicinger et al., 2025; Wandelt et al., 2025). However, a collection of separate predictive tasks does not automatically create an OCC workflow. The contribution here is therefore not a new prediction algorithm; it is the operational integration of heterogeneous predictive and rule-based signals into one pre-arrival advisory process.
 
 ### 2.4 Predictive Maintenance, Service Readiness, and Assistance
 
-Predictive-maintenance studies by Dangut, Lee and Mitici, Zeng, Hakami, and Kabashkin motivate maintenance-risk indicators for aviation decision support. Adjacent work on food-service and demand forecasting, including Malefors and Rodrigues, is relevant to service-readiness reasoning, but it should not be interpreted as evidence for item-wise airline trolley-demand prediction in this paper. Passenger-assistance and accessibility work by Gotti and Lee motivates explicit assistance-readiness handling, while the implemented system treats assistance as rule-based readiness support rather than localization machine learning.
+Predictive-maintenance studies motivate maintenance-risk indicators for aviation decision support (Dangut et al., 2022, 2023; Lee and Mitici, 2023; Zeng and Liang, 2023; Hakami, 2024; Kabashkin and Shoshin, 2024). Adjacent work on food-service and demand forecasting is relevant to service-readiness reasoning, but it should not be interpreted as evidence for item-wise airline trolley-demand prediction in this paper (Malefors et al., 2022; Rodrigues et al., 2024). Passenger-assistance and accessibility studies motivate explicit assistance-readiness handling, while the implemented system treats assistance as rule-based readiness support rather than localization machine learning (Gotti et al., 2024; Lee et al., 2025).
 
 ### 2.5 Human-in-the-Loop and Synthetic Scenario Evaluation
 
-Human-in-the-loop AI and explainability work, including Mosqueira-Rey, Vaccaro, and Xie, supports transparent advisory systems where model outputs remain reviewable by human operators. Synthetic-data and scenario-evaluation studies by Ardebili, de Frutos, and Stefani provide a methodological basis for controlled evaluation when operational data are not available, but they do not remove the need for future airline data and user studies. This paper therefore uses synthetic scenarios to evaluate architecture behavior, not to claim field validity.
+Human-in-the-loop AI and explainability work supports transparent advisory systems where model outputs remain reviewable by human operators (Xie et al., 2021; Mosqueira-Rey et al., 2023; Vaccaro et al., 2024). Synthetic-data and scenario-evaluation studies provide a methodological basis for controlled evaluation when operational data are not available, but they do not remove the need for future airline data and user studies (Ardebili et al., 2023; de Frutos Carro et al., 2024; Stefani et al., 2025). This paper therefore uses synthetic scenarios to evaluate architecture behavior, not to claim field validity.
 
 Across these streams, the open gap is the connection between module-level analytics and pre-arrival OCC coordination. Maintenance, inventory, bottleneck, and assistance-readiness signals are not treated as separate dashboards. They are fused into one operator-facing advisory workflow, with explicit labels distinguishing trained inference, rule-based readiness logic, and synthetic scenario simulation.
 
@@ -688,7 +689,7 @@ This paper presents a pre-arrival OCC decision-support architecture for aircraft
 
 ## Data, Code, and Artifact Availability
 
-The demonstrator source code, scenario-evaluation scripts, generated tables, and generated figures used in this study are available in a repository prepared for review. The identifying repository link has been withheld from the anonymized manuscript and will be provided after peer review or through an anonymized review link if required by the journal workflow. No airline operational dataset is included.
+The scenario-evaluation scripts, generated tables, and generated figures used in this study are provided as a blinded supplementary archive for peer review. The identifying public repository link has been withheld from the anonymized manuscript and is provided only in the non-anonymized title-page material. No airline operational dataset is included.
 
 ## Declaration of Generative AI and AI-Assisted Technologies
 

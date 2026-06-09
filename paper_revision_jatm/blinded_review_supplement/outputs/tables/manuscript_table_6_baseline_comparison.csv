@@ -1,0 +1,6 @@
+Baseline,Mean readiness,Std readiness,Alert levels,Dominant signals,Action categories,Critical,Priority
+Static delay/gate baseline,73.44,13.65,3,1,1,0,168
+Maintenance-only baseline,73.56,23.76,4,4,2,13,306
+Inventory-only baseline,69.15,15.80,3,3,2,0,401
+Bottleneck-only baseline,50.18,13.13,4,5,5,201,465
+Full integrated OCC fusion,47.40,25.04,4,5,7,370,284

@@ -1,27 +1,30 @@
-# JATM Scenario-Evaluation Artifacts
+# OCC Demonstrator JATM Revision Package
 
-This folder contains the Journal of Air Transport Management revision artifacts for the OCC decision-support demonstrator.
+This folder contains the separate Journal of Air Transport Management revision package for the OCC decision-support manuscript.
 
-## Contents
+The existing live OCC demo is treated as frozen. The scripts in this folder import existing backend service functions but do not edit backend, frontend, launcher, seeded-scenario, saved-model, or existing paper-package files.
 
-- `scripts/`: deterministic scenario-sweep, monotonicity, ablation, baseline, and manuscript-build scripts.
-- `outputs/tables/`: generated CSV inputs, outputs, summaries, monotonicity results, ablations, and baselines.
-- `outputs/figures/`: generated manuscript figures.
-- `manuscript/`: revised manuscript source and Word files prepared from the generated artifacts.
+## Main Commands
 
-## Reproducibility
-
-From the repository root, run the scripts with the same Python environment used for the demonstrator backend:
+From the repository root, using the same Python environment as the demonstrator backend:
 
 ```powershell
-python paper_revision_jatm/scripts/run_scenario_sweep.py
-python paper_revision_jatm/scripts/run_monotonicity_checks.py
-python paper_revision_jatm/scripts/run_ablation_baseline.py
-python paper_revision_jatm/scripts/build_jatm_manuscript.py
+python paper_revision_jatm\scripts\snapshot_frozen_demo.py --write-baseline
+python paper_revision_jatm\scripts\run_scenario_sweep.py --scenarios 1000
+python paper_revision_jatm\scripts\run_monotonicity_checks.py
+python paper_revision_jatm\scripts\run_ablation_baseline.py
+python paper_revision_jatm\scripts\build_jatm_manuscript.py
+python paper_revision_jatm\scripts\snapshot_frozen_demo.py --compare
 ```
 
-The scenario sweep uses deterministic seeds and evaluates synthetic inbound cases through the demonstrator's existing local model and fusion services.
+## Outputs
 
-## Evidence Boundary
+- `outputs\tables`: scenario sweep, regime, monotonicity, ablation, and baseline CSV files.
+- `outputs\figures`: manuscript-scale evaluation figures.
+- `manuscript`: revised JATM manuscript, title page, highlights, and submission notes.
+- `reports`: technical change report, response-to-rejection note, go/no-go recommendation, and evaluation summaries.
+- `snapshot`: frozen-demo manifest and comparison results.
 
-These artifacts support controlled synthetic scenario evaluation only. They do not contain airline operational data and do not establish airline deployment, certification, OCC user validation, safety assurance, measured operational savings, or return on investment.
+## Claim Boundary
+
+The generated evaluation package supports a controlled, reproducible scenario-based analysis of the implemented decision-support architecture. It does not establish real airline performance, OCC user acceptance, operational savings, certification readiness, or production deployment validity.

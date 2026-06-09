@@ -1,0 +1,7 @@
+Regime,n,Mean readiness,Median readiness,Dominant bottleneck,Maint. risk,Inv. risk,Assist. effect
+Assistance,166,66.58,65.50,Boarding,0.247,0.302,8.63
+Composite,166,8.77,5.00,Maintenance,0.784,0.872,4.80
+Congestion/delay,167,45.78,46.40,Boarding,0.287,0.758,6.54
+Inventory,167,54.62,56.20,Catering,0.288,0.869,7.23
+Routine,167,82.34,82.40,Cleaning,0.151,0.200,N/A
+Maintenance,167,26.17,26.60,Maintenance,0.884,0.365,9.31

@@ -1,0 +1,6 @@
+configuration,scenario_count,mean_readiness,mean_readiness_delta_from_full,critical_cases,priority_cases,mean_action_queue_size,top_action_changed_cases,alert_routine_count,alert_watch_count,alert_priority_count,alert_critical_count,top_action_maintenance_count,top_action_inventory_catering_count,top_action_assistance_count,top_action_gate_turnaround_count,top_action_occ_coordination_count,top_action_boarding_count,top_action_refueling_count,top_action_cleaning_count,top_action_operator_oversight_count
+full_system,1000,47.396,0.0,370,284,4.604,0,188,158,284,370,319,346,108,50,71,0,20,86,0
+no_assistance_in_fusion,1000,48.828,1.432,362,284,4.415,108,223,131,284,362,319,352,0,83,140,0,20,86,0
+no_bottleneck_in_fusion,1000,57.388,9.991,208,238,4.657,122,276,278,238,208,319,346,108,19,0,0,0,208,0
+no_inventory_in_fusion,1000,54.13,6.734,330,91,4.071,187,211,368,91,330,332,159,129,203,71,0,20,86,0
+no_maintenance_in_fusion,1000,61.049,13.652,79,307,3.938,319,202,412,307,79,0,525,123,155,91,0,20,86,0
