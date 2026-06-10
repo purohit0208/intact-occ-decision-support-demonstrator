@@ -709,7 +709,7 @@ def sanitize(text: str) -> str:
 
 
 def add_csv_table(document: Document, csv_path: Path, caption: str) -> None:
-    table_df = pd.read_csv(csv_path, keep_default_na=False).astype(str)
+    table_df = pd.read_csv(csv_path, keep_default_na=False, dtype=str).astype(str)
     rows = list(table_df.itertuples(index=False, name=None))
     headers = list(table_df.columns)
     table = document.add_table(rows=len(rows) + 1, cols=len(headers))
